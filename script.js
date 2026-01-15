@@ -7,134 +7,76 @@ let total = 0;
 let grandTotalAngka = 0;
 let nomor = 1;
 
-// ================= HEADER =================
-function updateHeader() {
-    let now = new Date();
-    let tanggal = now.toLocaleDateString("id-ID");
-    let jam = now.toLocaleTimeString("id-ID");
-
-    document.getElementById("noTransaksi").textContent = nomor;
-    document.getElementById("tanggalJam").textContent =
-        "Tanggal: " + tanggal + " | Jam: " + jam;
+// Header
+function updateHeader(){
+    let now=new Date();
+    document.getElementById("noTransaksi").textContent=nomor;
+    document.getElementById("tanggalJam").textContent=
+    now.toLocaleDateString("id-ID")+" "+now.toLocaleTimeString("id-ID");
 }
 updateHeader();
 
-// ================= FORMAT =================
-function formatRupiah(angka) {
-    return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+function formatRupiah(x){
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
 }
 
-// ================= TOTAL & DISKON =================
-function hitungTotal() {
-    let diskon = parseInt(document.getElementById("diskon").value) || 0;
-
-    let potongan = total * (diskon / 100);
-    grandTotalAngka = total - potongan;
-
-    totalText.textContent = formatRupiah(total);
-    grandTotalText.textContent = formatRupiah(Math.round(grandTotalAngka));
-
+// Total
+function hitungTotal(){
+    let diskon=parseInt(document.getElementById("diskon").value)||0;
+    grandTotalAngka=total-(total*(diskon/100));
+    totalText.textContent=formatRupiah(total);
+    grandTotalText.textContent=formatRupiah(grandTotalAngka);
     hitungKembalian();
 }
 
-// ================= KEMBALIAN =================
-function hitungKembalian() {
-    let metode = document.getElementById("metode").value;
-
-    // Jika QRIS → tidak ada kembalian
-    if (metode === "qris") {
-        kembalianText.textContent = "0";
-        return;
+// Kembalian
+function hitungKembalian(){
+    if(document.getElementById("metode").value==="qris"){
+        kembalianText.textContent="0"; return;
     }
-
-    let bayar = parseInt(document.getElementById("bayar").value);
-
-    if (isNaN(bayar)) {
-        kembalianText.textContent = "0";
-        return;
-    }
-
-    let selisih = bayar - Math.round(grandTotalAngka);
-
-    if (selisih < 0) {
-        kembalianText.textContent = "Kurang Rp " + formatRupiah(Math.abs(selisih));
-    } else {
-        kembalianText.textContent = formatRupiah(selisih);
-    }
+    let bayar=parseInt(document.getElementById("bayar").value)||0;
+    let selisih=bayar-grandTotalAngka;
+    kembalianText.textContent=selisih<0?
+    "Kurang Rp "+formatRupiah(-selisih):
+    formatRupiah(selisih);
 }
 
-// ================= TAMBAH ITEM =================
-function addItem(nama, harga, inputId) {
-    let qty = parseInt(document.getElementById(inputId).value);
-
-    if (isNaN(qty) || qty <= 0) {
-        alert("Jumlah harus lebih dari 0");
-        return;
-    }
-
-    let subtotal = harga * qty;
-
-    let li = document.createElement("li");
-    li.innerHTML = `
-        ${nama} x ${qty} = Rp ${formatRupiah(subtotal)}
-        <button onclick="hapusItem(this, ${subtotal})">❌</button>
-    `;
-
-    list.appendChild(li);
-
-    total += subtotal;
+// Tambah
+function addItem(nama,harga,id){
+    let qty=parseInt(document.getElementById(id).value);
+    let subtotal=harga*qty;
+    total+=subtotal;
+    list.innerHTML+=`<li>${nama} x ${qty} = Rp ${formatRupiah(subtotal)}</li>`;
     hitungTotal();
 }
 
-// ================= HAPUS ITEM =================
-function hapusItem(button, subtotal) {
-    button.parentElement.remove();
-    total -= subtotal;
-    if (total < 0) total = 0;
+// Reset
+function resetTransaksi(){
+    list.innerHTML="";
+    total=0;
+    grandTotalAngka=0;
+    nomor++;
+    updateHeader();
     hitungTotal();
 }
 
-// ================= EVENT =================
-document.getElementById("diskon").addEventListener("input", hitungTotal);
-document.getElementById("bayar").addEventListener("input", hitungKembalian);
-
-// Event metode pembayaran
-document.getElementById("metode").addEventListener("change", function () {
-    let metode = this.value;
-
-    if (metode === "qris") {
-        document.getElementById("cashBox").style.display = "none";
-        document.getElementById("qrisInfo").style.display = "block";
-        document.getElementById("bayar").value = "";
-        kembalianText.textContent = "0";
-    } else {
-        document.getElementById("cashBox").style.display = "block";
-        document.getElementById("qrisInfo").style.display = "none";
-    }
-});
-
-// ================= PRINT =================
-function printStruk() {
+// Print
+function printStruk(){
+    document.getElementById("thanks").style.display="block";
     window.print();
 }
 
-// ================= RESET =================
-function resetTransaksi() {
-    list.innerHTML = "";
+// Search
+document.getElementById("searchMenu").addEventListener("input",function(){
+    let k=this.value.toLowerCase();
+    document.querySelectorAll(".menu-item").forEach(i=>{
+        i.style.display=i.textContent.toLowerCase().includes(k)?"block":"none";
+    });
+});
 
-    total = 0;
-    grandTotalAngka = 0;
-
-    totalText.textContent = "0";
-    grandTotalText.textContent = "0";
-    kembalianText.textContent = "0";
-
-    document.getElementById("diskon").value = "";
-    document.getElementById("bayar").value = "";
-    document.getElementById("metode").value = "cash";
-    document.getElementById("cashBox").style.display = "block";
-    document.getElementById("qrisInfo").style.display = "none";
-
-    nomor++;
-    updateHeader();
+// Kategori
+function filterKategori(k){
+    document.querySelectorAll(".menu-item").forEach(i=>{
+        i.style.display=(k==="all"||i.classList.contains(k))?"block":"none";
+    });
 }
