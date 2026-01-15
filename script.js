@@ -20,7 +20,7 @@ function formatRupiah(x){
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
 }
 
-// Hitung total
+// Hitung total & grand total
 function hitungTotal(){
     let diskon = parseInt(document.getElementById("diskon").value) || 0;
     grandTotalAngka = total - (total * diskon / 100);
@@ -31,7 +31,7 @@ function hitungTotal(){
     hitungKembalian();
 }
 
-// Hitung kembalian
+// Hitung kembalian (HP & desktop)
 function hitungKembalian(){
     if(document.getElementById("metode").value === "qris"){
         kembalianText.textContent = "0";
@@ -40,9 +40,9 @@ function hitungKembalian(){
     let bayar = parseInt(document.getElementById("bayar").value) || 0;
     let selisih = bayar - grandTotalAngka;
 
-    kembalianText.textContent = selisih < 0
-        ? "Kurang Rp " + formatRupiah(-selisih)
-        : formatRupiah(selisih);
+    kembalianText.textContent =
+        selisih < 0 ? "Kurang Rp " + formatRupiah(-selisih)
+                    : formatRupiah(selisih);
 }
 
 // Tambah item
@@ -55,7 +55,7 @@ function addItem(nama,harga,id){
     hitungTotal();
 }
 
-// Reset
+// Reset transaksi
 function resetTransaksi(){
     list.innerHTML = "";
     total = 0;
@@ -78,10 +78,13 @@ function printStruk(){
     window.print();
 }
 
-// Realtime update
-document.getElementById("diskon").addEventListener("input", hitungTotal);
-document.getElementById("bayar").addEventListener("input", hitungKembalian);
-document.getElementById("metode").addEventListener("change", function(){
+/* ===== MOBILE FIX (PENTING) ===== */
+["input","change","keyup","blur"].forEach(evt=>{
+    document.getElementById("diskon").addEventListener(evt,hitungTotal);
+    document.getElementById("bayar").addEventListener(evt,hitungKembalian);
+});
+
+document.getElementById("metode").addEventListener("change",function(){
     document.getElementById("qrisInfo").style.display =
         this.value === "qris" ? "block" : "none";
     hitungKembalian();
