@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <title>Mustika Joglo Cafe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +13,12 @@
 <div class="menu">
 <h2>Menu Mustika Joglo Cafe</h2>
 
-<!-- Tombol Kategori -->
 <div class="kategori">
     <button onclick="filterKategori('all')">Semua</button>
     <button onclick="filterKategori('minuman')">☕ Minuman</button>
     <button onclick="filterKategori('makanan')">🍜 Makanan</button>
 </div>
 
-<!-- Search -->
 <input type="text" id="searchMenu" placeholder="Cari menu..."
 style="width:100%; padding:8px; margin:10px 0;">
 
@@ -63,12 +61,10 @@ Mie Goreng - Rp18.000
 <input type="number" id="mie" value="1" min="1">
 <button onclick="addItem('Mie Goreng',18000,'mie')">Tambah</button>
 </div>
-
 </div>
 
-<!-- STRUK -->
 <div class="struk">
-<h2>Struk</h2>
+<h2>Struk Pembayaran</h2>
 
 <p>
 Mustika Joglo Cafe<br>
@@ -83,7 +79,7 @@ WA: 0812-0000-0000 | IG: @mustikajoglocafe
 
 <p>Total: Rp <span id="total">0</span></p>
 
-Diskon (%) <input type="number" id="diskon"><br><br>
+Diskon (%) <input type="number" id="diskon" value="0"><br><br>
 
 <b>Grand Total: Rp <span id="grandTotal">0</span></b><br><br>
 
@@ -104,8 +100,9 @@ Metode:
 <button onclick="printStruk()">Print</button>
 <button onclick="resetTransaksi()">Reset</button>
 
-<p id="thanks" style="display:none;text-align:center;">Terima kasih sudah berkunjung 🙏</p>
-
+<p id="thanks" style="display:none;text-align:center;">
+Terima kasih sudah berkunjung 🙏
+</p>
 </div>
 
 <script src="script.js"></script>
