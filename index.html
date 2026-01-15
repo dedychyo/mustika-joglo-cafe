@@ -13,87 +13,100 @@
 <div class="menu">
 <h2>Menu Mustika Joglo Cafe</h2>
 
+<!-- Tombol Kategori -->
+<div class="kategori">
+    <button onclick="filterKategori('all')">Semua</button>
+    <button onclick="filterKategori('minuman')">☕ Minuman</button>
+    <button onclick="filterKategori('makanan')">🍜 Makanan</button>
+</div>
+
+<!-- Search -->
+<input type="text" id="searchMenu" placeholder="Cari menu..."
+style="width:100%; padding:8px; margin:10px 0;">
+
 <h3>☕ Minuman</h3>
-Kopi Hitam - Rp10.000 
+
+<div class="menu-item minuman">
+Kopi Hitam - Rp10.000
 <input type="number" id="kopi" value="1" min="1">
-<button onclick="addItem('Kopi Hitam', 10000, 'kopi')">Tambah</button>
+<button onclick="addItem('Kopi Hitam',10000,'kopi')">Tambah</button>
+</div>
 
-Kopi Susu - Rp12.000 
+<div class="menu-item minuman">
+Kopi Susu - Rp12.000
 <input type="number" id="kopisusu" value="1" min="1">
-<button onclick="addItem('Kopi Susu', 12000, 'kopisusu')">Tambah</button>
+<button onclick="addItem('Kopi Susu',12000,'kopisusu')">Tambah</button>
+</div>
 
-Teh Manis - Rp8.000 
+<div class="menu-item minuman">
+Teh Manis - Rp8.000
 <input type="number" id="teh" value="1" min="1">
-<button onclick="addItem('Teh Manis', 8000, 'teh')">Tambah</button>
+<button onclick="addItem('Teh Manis',8000,'teh')">Tambah</button>
+</div>
 
 <h3>🍜 Makanan</h3>
-Ayam Geprek - Rp22.000 
+
+<div class="menu-item makanan">
+Ayam Geprek - Rp22.000
 <input type="number" id="ayam" value="1" min="1">
-<button onclick="addItem('Ayam Geprek', 22000, 'ayam')">Tambah</button>
+<button onclick="addItem('Ayam Geprek',22000,'ayam')">Tambah</button>
+</div>
 
-Nasi Goreng - Rp20.000 
+<div class="menu-item makanan">
+Nasi Goreng - Rp20.000
 <input type="number" id="nasgor" value="1" min="1">
-<button onclick="addItem('Nasi Goreng', 20000, 'nasgor')">Tambah</button>
+<button onclick="addItem('Nasi Goreng',20000,'nasgor')">Tambah</button>
+</div>
 
-Mie Goreng - Rp18.000 
+<div class="menu-item makanan">
+Mie Goreng - Rp18.000
 <input type="number" id="mie" value="1" min="1">
-<button onclick="addItem('Mie Goreng', 18000, 'mie')">Tambah</button>
+<button onclick="addItem('Mie Goreng',18000,'mie')">Tambah</button>
+</div>
 
 </div>
 
+<!-- STRUK -->
 <div class="struk">
-    <h2>Struk</h2>
+<h2>Struk</h2>
 
-    <p id="alamat">
-        Mustika Joglo Cafe<br>
-        Jl. Kwangsan. Jumapolo, Karanganyar
-    </p>
+<p>
+Mustika Joglo Cafe<br>
+Jl. Kwangsan, Jumapolo, Karanganyar<br>
+WA: 0812-0000-0000 | IG: @mustikajoglocafe
+</p>
 
-    <p id="kontak">
-    WA: 0812-0000-0000<br>
-    IG: @mustikajoglocafe
-    </p>
+<p>No. Transaksi: <span id="noTransaksi">1</span></p>
+<p id="tanggalJam"></p>
 
+<ul id="list"></ul>
 
-    <p>No. Transaksi: <span id="noTransaksi">1</span></p>
-    <p id="tanggalJam"></p>
+<p>Total: Rp <span id="total">0</span></p>
 
-    <ul id="list"></ul>
+Diskon (%) <input type="number" id="diskon"><br><br>
 
+<b>Grand Total: Rp <span id="grandTotal">0</span></b><br><br>
 
-    <h3>Total: Rp <span id="total">0</span></h3>
+Metode:
+<select id="metode">
+<option value="cash">Cash</option>
+<option value="qris">QRIS</option>
+</select>
 
-    <label>Diskon (%)</label>
-    <input type="number" id="diskon" placeholder="Isi jika ada">
-
-    <p><b>Grand Total: Rp <span id="grandTotal">0</span></b></p>
-
-    <label>Metode Pembayaran</label>
-    <select id="metode">
-    <option value="cash">Cash</option>
-    <option value="qris">QRIS</option>
-    </select>
-
-    <div id="cashBox">
-    <label>Uang Dibayar</label>
-    <input type="number" id="bayar">
-    </div>
-
-    <p id="qrisInfo" style="display:none; font-weight:bold; color:green;">
-    Silakan scan QRIS untuk pembayaran
-    </p>
-
-
-    <p>Kembalian: Rp <span id="kembalian">0</span></p>
-
-    <button onclick="printStruk()">Print</button>
-    <button onclick="resetTransaksi()">Reset</button>
-    <p id="thanks" style="display:none; text-align:center; margin-top:10px;">
-    Terima kasih sudah berkunjung 🙏
-    </p>
-
+<div id="cashBox">
+<input type="number" id="bayar" placeholder="Uang Dibayar">
 </div>
 
+<p id="qrisInfo" style="display:none;color:green;">Silakan scan QRIS</p>
+
+<p>Kembalian: Rp <span id="kembalian">0</span></p>
+
+<button onclick="printStruk()">Print</button>
+<button onclick="resetTransaksi()">Reset</button>
+
+<p id="thanks" style="display:none;text-align:center;">Terima kasih sudah berkunjung 🙏</p>
+
+</div>
 
 <script src="script.js"></script>
 </body>
