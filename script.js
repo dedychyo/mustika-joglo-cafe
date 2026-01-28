@@ -1,106 +1,162 @@
-let list = document.getElementById("list");
-let totalText = document.getElementById("total");
-let grandTotalText = document.getElementById("grandTotal");
-let kembalianText = document.getElementById("kembalian");
+let cart = {};
+let noTransaksi = 1;
+let omzetHarian = 0;
 
-let total = 0;
-let grandTotalAngka = 0;
-let nomor = 1;
-
-// Header
-function updateHeader(){
-    let now = new Date();
-    document.getElementById("noTransaksi").textContent = nomor;
-    document.getElementById("tanggalJam").textContent =
-        now.toLocaleDateString("id-ID") + " " + now.toLocaleTimeString("id-ID");
-}
-updateHeader();
-
-function formatRupiah(x){
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+/* ================= TAMBAH ITEM ================= */
+function addItem(nama, harga) {
+    if (cart[nama]) {
+        cart[nama].qty += 1;
+    } else {
+        cart[nama] = {
+            harga: harga,
+            qty: 1
+        };
+    }
+    renderCart();
 }
 
-// Hitung total & grand total
-function hitungTotal(){
-    let diskon = parseInt(document.getElementById("diskon").value) || 0;
-    grandTotalAngka = total - (total * diskon / 100);
+/* ================= RENDER STRUK ================= */
+function renderCart() {
+    const list = document.getElementById("list");
+    const listDapur = document.getElementById("listDapur");
+    const totalEl = document.getElementById("total");
+    const grandTotalEl = document.getElementById("grandTotal");
 
-    totalText.textContent = formatRupiah(total);
-    grandTotalText.textContent = formatRupiah(grandTotalAngka);
+    list.innerHTML = "";
+    listDapur.innerHTML = "";
+    let total = 0;
+
+    for (let item in cart) {
+        const subtotal = cart[item].harga * cart[item].qty;
+        total += subtotal;
+
+        // STRUK CUSTOMER
+        const li = document.createElement("li");
+        li.textContent = `${item} x${cart[item].qty}  Rp ${subtotal.toLocaleString("id-ID")}`;
+        list.appendChild(li);
+
+        // STRUK DAPUR (TANPA HARGA)
+        const liDapur = document.createElement("li");
+        liDapur.textContent = `${item} x${cart[item].qty}`;
+        listDapur.appendChild(liDapur);
+    }
+
+    totalEl.textContent = total.toLocaleString("id-ID");
+
+    const diskon = parseInt(document.getElementById("diskon").value) || 0;
+    const grandTotal = total - (total * diskon / 100);
+    grandTotalEl.textContent = grandTotal.toLocaleString("id-ID");
 
     hitungKembalian();
 }
 
-// Hitung kembalian (HP & desktop)
-function hitungKembalian(){
-    if(document.getElementById("metode").value === "qris"){
-        kembalianText.textContent = "0";
+
+/* ================= KEMBALIAN ================= */
+function hitungKembalian() {
+    const metode = document.getElementById("metode").value;
+
+    if (metode !== "cash") {
+        document.getElementById("kembalian").textContent = "0";
         return;
     }
-    let bayar = parseInt(document.getElementById("bayar").value) || 0;
-    let selisih = bayar - grandTotalAngka;
 
-    kembalianText.textContent =
-        selisih < 0 ? "Kurang Rp " + formatRupiah(-selisih)
-                    : formatRupiah(selisih);
+    const bayar = parseInt(document.getElementById("bayar").value) || 0;
+    const grandTotal = parseInt(
+        document.getElementById("grandTotal").textContent.replace(/\./g, "")
+    ) || 0;
+
+    const kembalian = bayar - grandTotal;
+
+    document.getElementById("kembalian").textContent =
+        kembalian >= 0 ? kembalian.toLocaleString("id-ID") : "0";
 }
 
-// Tambah item
-function addItem(nama,harga,id){
-    let qty = parseInt(document.getElementById(id).value);
-    let subtotal = harga * qty;
 
-    total += subtotal;
-    list.innerHTML += `<li>${nama} x ${qty} = Rp ${formatRupiah(subtotal)}</li>`;
-    hitungTotal();
+function gantiMetode() {
+    const metode = document.getElementById("metode").value;
+    const cashBox = document.getElementById("cashBox");
+    const bayar = document.getElementById("bayar");
+
+    if (metode === "cash") {
+        cashBox.style.display = "block";
+        bayar.disabled = false;
+        bayar.focus();
+        document.getElementById("qrisInfo").style.display = "none";
+    } else {
+        cashBox.style.display = "none";
+        bayar.value = "";
+        document.getElementById("kembalian").textContent = "0";
+        document.getElementById("qrisInfo").style.display = "block";
+    }
 }
 
-// Reset transaksi
-function resetTransaksi(){
-    list.innerHTML = "";
-    total = 0;
-    grandTotalAngka = 0;
 
+
+/* ================= PRINT ================= */
+function printStruk() {
+    window.print();
+
+    // simpan ke history
+    simpanHistory();
+
+    document.getElementById("thanks").style.display = "block";
+}
+
+/* ================= RESET TRANSAKSI ================= */
+function resetTransaksi() {
+    cart = {};
+    document.getElementById("list").innerHTML = "";
+    document.getElementById("total").textContent = "0";
+    document.getElementById("grandTotal").textContent = "0";
+    document.getElementById("kembalian").textContent = "0";
     document.getElementById("bayar").value = "";
     document.getElementById("diskon").value = 0;
-    document.getElementById("kembalian").textContent = "0";
-    document.getElementById("qrisInfo").style.display = "none";
     document.getElementById("thanks").style.display = "none";
+    document.getElementById("noTransaksiDapur").textContent = noTransaksi;
 
-    nomor++;
-    updateHeader();
-    hitungTotal();
+
+    noTransaksi++;
+    document.getElementById("noTransaksi").textContent = noTransaksi;
 }
 
-// Print
-function printStruk(){
-    document.getElementById("thanks").style.display = "block";
-    window.print();
+/* ================= HISTORY PENJUALAN ================= */
+function simpanHistory() {
+    const historyList = document.getElementById("historyList");
+
+    for (let item in cart) {
+        const subtotal = cart[item].harga * cart[item].qty;
+        omzetHarian += subtotal;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${item}</td>
+            <td>${cart[item].qty}</td>
+            <td>${subtotal.toLocaleString("id-ID")}</td>
+        `;
+        historyList.appendChild(tr);
+    }
+
+    document.getElementById("omzetHarian").textContent =
+        omzetHarian.toLocaleString("id-ID");
 }
 
-/* ===== MOBILE FIX (PENTING) ===== */
-["input","change","keyup","blur"].forEach(evt=>{
-    document.getElementById("diskon").addEventListener(evt,hitungTotal);
-    document.getElementById("bayar").addEventListener(evt,hitungKembalian);
-});
-
-document.getElementById("metode").addEventListener("change",function(){
-    document.getElementById("qrisInfo").style.display =
-        this.value === "qris" ? "block" : "none";
-    hitungKembalian();
-});
-
-// Search
-document.getElementById("searchMenu").addEventListener("input",function(){
-    let k = this.value.toLowerCase();
-    document.querySelectorAll(".menu-item").forEach(i=>{
-        i.style.display = i.textContent.toLowerCase().includes(k) ? "block" : "none";
-    });
-});
-
-// Kategori
-function filterKategori(k){
-    document.querySelectorAll(".menu-item").forEach(i=>{
-        i.style.display = (k==="all" || i.classList.contains(k)) ? "block" : "none";
-    });
+/* ================= TANGGAL & JAM ================= */
+function updateJam() {
+    const now = new Date();
+    document.getElementById("tanggalJam").textContent =
+        now.toLocaleString("id-ID");
 }
+
+setInterval(updateJam, 1000);
+updateJam();
+
+document.getElementById("bayar").addEventListener("input", hitungKembalian);
+document.getElementById("diskon").addEventListener("input", renderCart);
+document.getElementById("metode").addEventListener("change", gantiMetode);
+document.getElementById("metode").addEventListener("change", () => {
+    document.getElementById("bayar").value = "";
+    document.getElementById("kembalian").textContent = "0";
+});
+document.getElementById("kembalian").textContent =
+    kembalian >= 0 ? kembalian.toLocaleString("id-ID") : "Uang Kurang";
+
