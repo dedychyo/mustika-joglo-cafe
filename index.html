@@ -1,110 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Mustika Joglo Cafe</title>
+    <meta charset="UTF-8">
+    <title>Mustika Joglo Resto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>☕ Mustika Joglo Cafe</h1>
+<h1>☕ Mustika Joglo Resto</h1>
 
+<!-- ================= MENU ================= -->
 <div class="menu">
-<h2>Menu Mustika Joglo Cafe</h2>
 
-<div class="kategori">
-    <button onclick="filterKategori('all')">Semua</button>
-    <button onclick="filterKategori('minuman')">☕ Minuman</button>
-    <button onclick="filterKategori('makanan')">🍜 Makanan</button>
+    <h2>🍽️ Menu Makanan</h2>
+    <button onclick="addItem('Bebek Utuh Khas Klaten',110000)">Bebek Utuh Khas Klaten - Rp110.000</button>
+    <button onclick="addItem('Bebek 1 Porsi Khas Klaten',26000)">Bebek 1 Porsi Khas Klaten - Rp26.000</button>
+    <button onclick="addItem('Ayam Kremes Kampung Utuh',75000)">Ayam Kremes Kampung Utuh - Rp75.000</button>
+    <button onclick="addItem('Ayam Kampung 1 Porsi',22000)">Ayam Kampung 1 Porsi - Rp22.000</button>
+    <button onclick="addItem('Ayam Kremes Biasa Utuh',67000)">Ayam Kremes Biasa Utuh - Rp67.000</button>
+    <button onclick="addItem('Ayam Kremes Biasa 1 Porsi',18000)">Ayam Kremes Biasa 1 Porsi - Rp18.000</button>
+    <button onclick="addItem('Bebek Kremes Utuh',105000)">Bebek Kremes Utuh - Rp105.000</button>
+    <button onclick="addItem('Bebek Kremes 1 Porsi',25000)">Bebek Kremes 1 Porsi - Rp25.000</button>
+    <button onclick="addItem('Nasi Putih',4000)">Nasi Putih - Rp4.000</button>
+    <button onclick="addItem('Bakso',17000)">Bakso - Rp17.000</button>
+    <button onclick="addItem('Bakso Iga',22000)">Bakso Iga - Rp22.000</button>
+    <button onclick="addItem('Mie Ayam',10000)">Mie Ayam - Rp10.000</button>
+    <button onclick="addItem('Mie Ayam Ceker',15000)">Mie Ayam Ceker - Rp15.000</button>
+    <button onclick="addItem('Mie Ayam Bakso',20000)">Mie Ayam Bakso - Rp20.000</button>
+    <button onclick="addItem('Yamin Pisah Kuah',20000)">Yamin Pisah Kuah - Rp20.000</button>
+    <button onclick="addItem('Sop Iga',28000)">Sop Iga - Rp28.000</button>
+
+    <h2>🥤 Menu Minuman</h2>
+    <button onclick="addItem('Teh Panas',4000)">Teh Panas - Rp4.000</button>
+    <button onclick="addItem('Es Teh',5000)">Es Teh - Rp5.000</button>
+    <button onclick="addItem('Jeruk Panas',6000)">Jeruk Panas - Rp6.000</button>
+    <button onclick="addItem('Es Jeruk',7000)">Es Jeruk - Rp7.000</button>
+    <button onclick="addItem('Lemon Tea Panas',6000)">Lemon Tea Panas - Rp6.000</button>
+    <button onclick="addItem('Es Lemon Tea',7000)">Es Lemon Tea - Rp7.000</button>
+    <button onclick="addItem('Es Teler',10000)">Es Teler - Rp10.000</button>
+    <button onclick="addItem('Jus Melon',8000)">Jus Melon - Rp8.000</button>
+    <button onclick="addItem('Jus Jambu',8000)">Jus Jambu - Rp8.000</button>
+    <button onclick="addItem('Jus Alpukat',8000)">Jus Alpukat - Rp8.000</button>
+    <button onclick="addItem('Jus Mangga',8000)">Jus Mangga - Rp8.000</button>
+    <button onclick="addItem('Kopi Hitam',8000)">Kopi Hitam - Rp8.000</button>
+    <button onclick="addItem('Es Kopi Susu',12000)">Es Kopi Susu - Rp12.000</button>
+    <button onclick="addItem('Es Campur',10000)">Es Campur - Rp10.000</button>
+
+    <h2>🍟 Gorengan / Snack</h2>
+    <button onclick="addItem('Tempe Mendoan',6000)">Tempe Mendoan - Rp6.000</button>
+    <button onclick="addItem('Singkong Goreng',7000)">Singkong Goreng - Rp7.000</button>
+    <button onclick="addItem('Kentang Goreng',7000)">Kentang Goreng - Rp7.000</button>
+    <button onclick="addItem('Mix Platter',12000)">Mix Platter - Rp12.000</button>
+    <button onclick="addItem('Tahu Bakso',7000)">Tahu Bakso - Rp7.000</button>
+
 </div>
 
-<input type="text" id="searchMenu" placeholder="Cari menu..."
-style="width:100%; padding:8px; margin:10px 0;">
+<!-- ================= STRUK ================= -->
+<div class="struk pembayaran thermal-58" id="strukPembayaran">
 
-<h3>☕ Minuman</h3>
+    <div class="logo-struk">
+        <img src="logo.jpeg" alt="Logo Mustika Joglo">
+    </div>
 
-<div class="menu-item minuman">
-Kopi Hitam - Rp10.000
-<input type="number" id="kopi" value="1" min="1">
-<button onclick="addItem('Kopi Hitam',10000,'kopi')">Tambah</button>
+    <h3 style="text-align:center;">STRUK PEMBAYARAN</h3>
+
+    <p style="text-align:center;">
+        Mustika Joglo Resto<br>
+        Kwangsan, Jumapolo, Karanganyar<br>
+        WA: 0852-2977-7778
+    </p>
+
+    <hr>
+
+    <p>No Transaksi: <span id="noTransaksi">1</span></p>
+    <p id="tanggalJam"></p>
+
+    <ul id="list"></ul>
+
+    <hr>
+
+    <p>Total : Rp <span id="total">0</span></p>
+
+    Diskon (%):
+    <input type="number" id="diskon" value="0"><br><br>
+
+    <b>Grand Total : Rp <span id="grandTotal">0</span></b><br><br>
+
+    Metode:
+    <select id="metode" onchange="gantiMetode()">
+    <option value="cash">Cash</option>
+    <option value="qris">QRIS</option>
+    </select>
+
+    <!-- ✅ INI CASH BOX -->
+    <div id="cashBox">
+    <input
+        type="number"
+        id="bayar"
+        placeholder="Uang Dibayar"
+        oninput="hitungKembalian()"
+    >
+    </div>
+
+    <p>Kembalian : Rp <span id="kembalian">0</span></p>
+
+    <p id="thanks">Terima kasih 🙏</p>
+
+    <button onclick="printStruk()">🖨️ Print</button>
+    <button onclick="resetTransaksi()">🔄 Transaksi Baru</button>
+
 </div>
 
-<div class="menu-item minuman">
-Kopi Susu - Rp12.000
-<input type="number" id="kopisusu" value="1" min="1">
-<button onclick="addItem('Kopi Susu',12000,'kopisusu')">Tambah</button>
+<!-- ================= STRUK DAPUR ================= -->
+<div class="struk dapur thermal-58" id="strukDapur">
+
+    <h3 style="text-align:center;">STRUK DAPUR</h3>
+
+    <p style="text-align:center;">
+        Mustika Joglo Resto<br>
+        <p>No Transaksi: <span id="noTransaksi">1</span></p>
+    </p>
+
+    <hr>
+
+    <ul id="listDapur"></ul>
+
+    <hr>
+
+    <p style="text-align:center;">🔥 Segera Diproses 🔥</p>
 </div>
 
-<div class="menu-item minuman">
-Teh Manis - Rp8.000
-<input type="number" id="teh" value="1" min="1">
-<button onclick="addItem('Teh Manis',8000,'teh')">Tambah</button>
+
+<!-- ================= DAFTAR TRANSAKSI ================= -->
+<div class="daftar-transaksi">
+    <h2>🧾 Daftar Transaksi</h2>
+    <table border="1" width="100%">
+        <tbody id="daftarTransaksi"></tbody>
+    </table>
 </div>
 
-<h3>🍜 Makanan</h3>
-
-<div class="menu-item makanan">
-Ayam Geprek - Rp22.000
-<input type="number" id="ayam" value="1" min="1">
-<button onclick="addItem('Ayam Geprek',22000,'ayam')">Tambah</button>
-</div>
-
-<div class="menu-item makanan">
-Nasi Goreng - Rp20.000
-<input type="number" id="nasgor" value="1" min="1">
-<button onclick="addItem('Nasi Goreng',20000,'nasgor')">Tambah</button>
-</div>
-
-<div class="menu-item makanan">
-Mie Goreng - Rp18.000
-<input type="number" id="mie" value="1" min="1">
-<button onclick="addItem('Mie Goreng',18000,'mie')">Tambah</button>
-</div>
-</div>
-
-<!-- STRUK -->
-<div class="struk">
-<h2>Struk Pembayaran</h2>
-
-<p>
-Mustika Joglo Cafe<br>
-Jl. Kwangsan, Jumapolo, Karanganyar<br>
-WA: 0812-0000-0000 | IG: @mustikajoglocafe
-</p>
-
-<p>No. Transaksi: <span id="noTransaksi">1</span></p>
-<p id="tanggalJam"></p>
-
-<ul id="list"></ul>
-
-<p>Total: Rp <span id="total">0</span></p>
-
-Diskon (%)  
-<input type="number" id="diskon" value="0" inputmode="numeric"><br><br>
-
-<b>Grand Total: Rp <span id="grandTotal">0</span></b><br><br>
-
-Metode:
-<select id="metode">
-<option value="cash">Cash</option>
-<option value="qris">QRIS</option>
-</select>
-
-<div id="cashBox">
-<input type="number" id="bayar" placeholder="Uang Dibayar" inputmode="numeric">
-</div>
-
-<p id="qrisInfo" style="display:none;color:green;">Silakan scan QRIS</p>
-
-<p>Kembalian: Rp <span id="kembalian">0</span></p>
-
-<button onclick="printStruk()">Print</button>
-<button onclick="resetTransaksi()">Reset</button>
-
-<p id="thanks" style="display:none;text-align:center;">
-Terima kasih sudah berkunjung 🙏
-</p>
+<!-- ================= HISTORY ================= -->
+<div class="history">
+    <h2>📊 History Penjualan</h2>
+    <table border="1" width="100%">
+        <tbody id="historyList"></tbody>
+    </table>
 </div>
 
 <script src="script.js"></script>
