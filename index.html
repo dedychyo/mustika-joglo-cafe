@@ -148,6 +148,27 @@
     </table>
 </div>
 
+<!-- LIBRARY UNTUK CETAK STRUK -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+function printStruk() {
+    const struk = document.getElementById("strukPembayaran");
+
+    html2canvas(struk, {
+        scale: 2,
+        useCORS: true
+    }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+
+        // download otomatis
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = "struk-mustika-joglo.png";
+        link.click();
+    });
+}
+</script>
 <script src="script.js"></script>
 </body>
 </html>
